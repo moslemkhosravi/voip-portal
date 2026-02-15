@@ -1,0 +1,34 @@
+{% extends "telephony/base_admin.html" %}
+{% block title %}VoIP Admin{% endblock %}
+{% block content %}
+  <h2>VoIP Portal</h2>
+  <div class="card">
+    <div><b>PBX:</b> {{cfg.pbx_type}} | <b>SSH:</b> {{cfg.ssh_host}} | <b>AMI:</b> {{cfg.ami_host}}:{{cfg.ami_port}}</div>
+  </div>
+
+  <div class="card">
+    <h3>Provisioning Wizard</h3>
+    <form action="/voip-admin/provisioning/start" method="post">
+      {% csrf_token %}
+      <button class="btn" type="submit">شروع Provisioning روی PBX</button>
+    </form>
+    <p class="sk">این ویزارد مراحل اصلی را idempotent انجام می‌دهد و نتیجه هر مرحله را ذخیره می‌کند.</p>
+  </div>
+
+  <div class="card">
+    <h3>آخرین اجراها</h3>
+    <table>
+      <tr><th>ID</th><th>شروع</th><th>وضعیت</th><th>مشاهده</th></tr>
+      {% for r in runs %}
+        <tr>
+          <td>{{r.id}}</td>
+          <td>{{r.created_at}}</td>
+          <td>{{r.status}}</td>
+          <td><a href="/voip-admin/provisioning/{{r.id}}">باز</a></td>
+        </tr>
+      {% empty %}
+        <tr><td colspan="4">هیچ اجرا‌ای ثبت نشده</td></tr>
+      {% endfor %}
+    </table>
+  </div>
+{% endblock %}

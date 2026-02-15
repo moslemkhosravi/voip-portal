@@ -1,0 +1,30 @@
+{% extends "telephony/base_admin.html" %}
+{% block title %}Provisioning{% endblock %}
+{% block content %}
+  <h2>Provisioning Run #{{run.id}}</h2>
+  <div class="card">
+    <div><b>Status:</b> {{run.status}}</div>
+    <div><b>Started:</b> {{run.created_at}} | <b>Finished:</b> {{run.finished_at}}</div>
+    <div><b>Summary:</b> {{run.summary}}</div>
+  </div>
+
+  <div class="card">
+    <h3>Steps</h3>
+    <table>
+      <tr><th>مرحله</th><th>وضعیت</th><th>لاگ</th><th>خطا</th></tr>
+      {% for s in steps %}
+        <tr>
+          <td>{{s.title}}</td>
+          <td>
+            {% if s.status == "ok" %}<span class="ok">✅ OK</span>
+            {% elif s.status == "error" %}<span class="err">❌ ERROR</span>
+            {% elif s.status == "skipped" %}<span class="sk">⏭ SKIPPED</span>
+            {% else %}{{s.status}}{% endif %}
+          </td>
+          <td><pre>{{s.stdout}}{{s.stderr}}</pre></td>
+          <td><pre>{{s.error_message}}</pre></td>
+        </tr>
+      {% endfor %}
+    </table>
+  </div>
+{% endblock %}

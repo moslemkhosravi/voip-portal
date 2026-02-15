@@ -1,0 +1,63 @@
+{% extends "telephony/base_admin.html" %}
+{% block title %}تنظیمات{% endblock %}
+{% block content %}
+  <h2>تنظیمات</h2>
+  {% if msg %}<p class="ok">{{msg}}</p>{% endif %}
+  <form method="post">
+    {% csrf_token %}
+    <div class="card">
+      <h3>PBX Type</h3>
+      <select name="pbx_type">
+        <option value="freepbx" {% if cfg.pbx_type == "freepbx" %}selected{% endif %}>FreePBX</option>
+        <option value="issabel" {% if cfg.pbx_type == "issabel" %}selected{% endif %}>Issabel</option>
+        <option value="asterisk" {% if cfg.pbx_type == "asterisk" %}selected{% endif %}>Asterisk</option>
+      </select>
+    </div>
+
+    <div class="card">
+      <h3>WebRTC Softphone</h3>
+      <div>sip_domain: <input name="sip_domain" value="{{cfg.sip_domain}}" style="width:420px"></div>
+      <div>wss_url: <input name="wss_url" value="{{cfg.wss_url}}" style="width:420px"></div>
+      <div>stun_url: <input name="stun_url" value="{{cfg.stun_url}}" style="width:420px"></div>
+      <div>turn_url: <input name="turn_url" value="{{cfg.turn_url}}" style="width:420px"></div>
+      <div>turn_user: <input name="turn_user" value="{{cfg.turn_user}}" style="width:420px"></div>
+      <div>turn_pass: <input name="turn_pass" value="" placeholder="برای تغییر وارد کن" style="width:420px"></div>
+    </div>
+
+    <div class="card">
+      <h3>SSH Provisioning</h3>
+      <div>ssh_host: <input name="ssh_host" value="{{cfg.ssh_host}}" style="width:420px"></div>
+      <div>ssh_port: <input name="ssh_port" value="{{cfg.ssh_port}}" style="width:120px"></div>
+      <div>ssh_user: <input name="ssh_user" value="{{cfg.ssh_user}}" style="width:220px"></div>
+      <div>ssh_password: <input name="ssh_password" value="" placeholder="اگر کلید نداری" style="width:420px"></div>
+      <div>ssh_key_private:</div>
+      <div><textarea name="ssh_key_private" rows="6" style="width:520px" placeholder="PEM private key (اختیاری)"></textarea></div>
+      <div>sudo_password: <input name="sudo_password" value="" placeholder="اگر sudo -S لازم است" style="width:420px"></div>
+      <div style="margin-top:8px;">
+        pbx_custom_file: <input name="pbx_custom_file" value="{{cfg.pbx_custom_file}}" style="width:520px">
+      </div>
+      <div>
+        pbx_include_file: <input name="pbx_include_file" value="{{cfg.pbx_include_file}}" style="width:520px">
+      </div>
+      <div>
+        http_conf_file: <input name="http_conf_file" value="{{cfg.http_conf_file}}" style="width:520px">
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>AMI Call Monitor</h3>
+      <div>ami_host: <input name="ami_host" value="{{cfg.ami_host}}" style="width:420px"></div>
+      <div>ami_port: <input name="ami_port" value="{{cfg.ami_port}}" style="width:120px"></div>
+      <div>ami_user: <input name="ami_user" value="{{cfg.ami_user}}" style="width:220px"></div>
+      <div>ami_password: <input name="ami_password" value="" placeholder="برای تغییر وارد کن" style="width:420px"></div>
+      <div>
+        <label><input type="checkbox" name="ami_tls" value="1" {% if cfg.ami_tls %}checked{% endif %}> AMI TLS</label>
+      </div>
+      <div>
+        <label><input type="checkbox" name="enable_spy" value="1" {% if cfg.enable_spy %}checked{% endif %}> فعال‌سازی Spy (Originate) - پیش‌فرض خاموش</label>
+      </div>
+    </div>
+
+    <button class="btn" type="submit">ذخیره</button>
+  </form>
+{% endblock %}

@@ -1,0 +1,40 @@
+{% extends "telephony/base_admin.html" %}
+{% block title %}مانیتور تماس‌ها{% endblock %}
+{% block content %}
+  <h2>مانیتور تماس‌ها (Live)</h2>
+  <div class="card">
+    <div class="sk">این صفحه از AMI listener استفاده می‌کند (سرویس worker). هر 2 ثانیه آپدیت می‌شود.</div>
+  </div>
+
+  <div class="card">
+    <table id="tbl">
+      <tr><th>Call ID</th><th>Caller</th><th>Dest</th><th>State</th><th>Duration</th><th>Channel</th></tr>
+    </table>
+  </div>
+
+  <script>
+    function secToHms(sec){
+      sec = Math.max(0, sec|0);
+      const h = Math.floor(sec/3600); sec%=3600;
+      const m = Math.floor(sec/60); const s = sec%60;
+      return (h? (h+":"):"") + String(m).padStart(2,"0")+":"+String(s).padStart(2,"0");
+    }
+    async function tick(){
+      try{
+        const r = await fetch("/api/calls/live");
+        const j = await r.json();
+        const tbl = document.getElementById("tbl");
+        tbl.innerHTML = '<tr><th>Call ID</th><th>Caller</th><th>Dest</th><th>State</th><th>Duration</th><th>Channel</th></tr>';
+        const now = Math.floor(Date.now()/1000);
+        (j.calls||[]).forEach(c=>{
+          const dur = now - (c.start_ts||now);
+          const tr = document.createElement("tr");
+          tr.innerHTML = `<td>${c.call_id||""}</td><td>${c.caller||""}</td><td>${c.dest||c.connected_line||c.dialstring||""}</td><td>${c.state||""}</td><td>${secToHms(dur)}</td><td>${c.channel||""}</td>`;
+          tbl.appendChild(tr);
+        });
+      }catch(e){}
+    }
+    tick();
+    setInterval(tick, 2000);
+  </script>
+{% endblock %}

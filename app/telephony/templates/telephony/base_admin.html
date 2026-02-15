@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <title>{% block title %}VoIP Admin{% endblock %}</title>
+  <style>
+    body{font-family:Tahoma,Arial; margin:16px;}
+    .nav a{margin-left:12px;}
+    .card{border:1px solid #ddd; padding:12px; border-radius:8px; margin:10px 0;}
+    table{border-collapse:collapse; width:100%;}
+    th,td{border:1px solid #ddd; padding:8px; text-align:right;}
+    .ok{color:green;font-weight:bold;}
+    .err{color:#b00020;font-weight:bold;}
+    .sk{color:#666;}
+    code,pre{background:#f7f7f7; padding:8px; border-radius:6px; display:block; overflow:auto;}
+    .btn{padding:8px 12px; border:1px solid #333; border-radius:8px; background:#fff; cursor:pointer;}
+  </style>
+</head>
+<body>
+  <div class="nav">
+    <a href="/voip-admin/">خانه</a>
+    <a href="/voip-admin/settings">تنظیمات</a>
+    <a href="/voip-admin/extensions">داخلی‌ها</a>
+    <a href="/voip-admin/calls">مانیتور تماس‌ها</a>
+    <a href="/admin/">Django Admin</a>
+  </div>
+  <hr>
+  {% block content %}{% endblock %}
+</body>
+</html>

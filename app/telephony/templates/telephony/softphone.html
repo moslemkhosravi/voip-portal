@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <title>Softphone</title>
+  <style>
+    body{font-family:Tahoma,Arial; margin:16px;}
+    .row{margin:10px 0;}
+    .btn{padding:8px 12px; border:1px solid #333; border-radius:8px; background:#fff; cursor:pointer; margin-left:6px;}
+    .danger{border-color:#b00020;}
+    .ok{color:green;font-weight:bold;}
+    .sk{color:#666;}
+    input{padding:8px; border:1px solid #ccc; border-radius:8px;}
+  </style>
+  <script src="/static/telephony/jssip.min.js"></script>
+  <script>
+    window.SOFTPHONE_CFG = {
+      wss_url: "{{wss_url}}",
+      sip_domain: "{{sip_domain}}",
+      stun_url: "{{stun_url}}",
+      turn_url: "{{turn_url}}",
+      turn_user: "{{turn_user}}",
+      turn_pass: "{{turn_pass}}",
+      sip_username: "{{sip_username}}",
+      sip_secret: "{{sip_secret}}",
+      display_name: "{{display_name}}",
+    };
+  </script>
+  <script src="/static/telephony/softphone.js"></script>
+</head>
+<body>
+  <h3>Softphone</h3>
+
+  <div class="row">وضعیت: <span id="status" class="sk">...</span></div>
+
+  <div class="row">
+    <input id="dial" placeholder="شماره" style="width:220px">
+    <button class="btn" id="btnCall">تماس</button>
+    <button class="btn danger" id="btnHangup">قطع</button>
+  </div>
+
+  <div class="row">
+    <button class="btn" id="btnMute">Mute</button>
+    <button class="btn" id="btnHold">Hold</button>
+  </div>
+
+  <div class="row">
+    <input id="transferTo" placeholder="Transfer to" style="width:220px">
+    <button class="btn" id="btnTransfer">Transfer</button>
+  </div>
+
+  <div class="row sk">
+    کنفرانس حرفه‌ای نیاز به ConfBridge/Server mixing دارد (v2). این v1: Hold/Transfer.
+  </div>
+
+  <hr>
+
+  <div id="incoming" style="display:none;">
+    <div>تماس ورودی از: <b id="caller"></b></div>
+    <button class="btn" id="btnAnswer">پاسخ</button>
+    <button class="btn danger" id="btnReject">رد</button>
+  </div>
+
+  <audio id="remoteAudio" autoplay></audio>
+</body>
+</html>

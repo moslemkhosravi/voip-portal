@@ -1,0 +1,33 @@
+{% extends "telephony/base_admin.html" %}
+{% block title %}داخلی‌ها{% endblock %}
+{% block content %}
+  <h2>مدیریت داخلی‌های WebRTC</h2>
+  {% if msg %}<p><b>{{msg}}</b></p>{% endif %}
+
+  <div class="card">
+    <form method="post">
+      {% csrf_token %}
+      <div>crm_user_id: <input name="crm_user_id" style="width:220px"></div>
+      <div>display_name: <input name="display_name" style="width:220px"></div>
+      <div>extension: <input name="extension" style="width:120px" placeholder="مثلاً 2001"></div>
+      <div>secret: <input name="secret" style="width:220px" placeholder="خالی = خودکار"></div>
+      <button class="btn" type="submit">ساخت/آپدیت + Provision</button>
+    </form>
+  </div>
+
+  <div class="card">
+    <h3>لیست</h3>
+    <table>
+      <tr><th>داخلی</th><th>crm_user_id</th><th>نام</th><th>فعال</th><th>تاریخ</th></tr>
+      {% for e in exts %}
+        <tr>
+          <td>{{e.extension}}</td>
+          <td>{{e.crm_user_id}}</td>
+          <td>{{e.display_name}}</td>
+          <td>{{e.is_enabled}}</td>
+          <td>{{e.created_at}}</td>
+        </tr>
+      {% endfor %}
+    </table>
+  </div>
+{% endblock %}
